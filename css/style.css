@@ -1,0 +1,16 @@
+@charset "utf-8";
+/* CSS Document */
+
+html,
+body{
+	margin: 0;
+	padding: 0;
+	overflow: hidden;
+}
+
+body{
+	width: 800px;
+	height: 1280px;
+	background-image: url(../img/BackFondo.jpg);
+	background-repeat: no-repeat;
+}
