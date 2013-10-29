@@ -10,10 +10,79 @@
 
     <script type="text/javascript" src="js/jquery.js"></script>
     <script type="text/javascript" src="js/jquery-1.9.1.js"></script>
+
+    <script type="text/javascript">
+		$(function(){
+			buttons();
+		});
+    </script>
 </head>
 <body>
-	<div id="wrap">
-
+	<!--HOME-->
+	<div id="part1">
+		<div id="logoInHome"><img src="img/logo.png" /></div>
+		<div id="botones">
+			<img src="img/button1Gamer.png" id="player-1" />
+			<img src="img/button2Gamer.png" id="player-2" />
+		</div>
 	</div>
+	<!--HOME-->
+
+	<!--INSTRUCTIONS-->
+	<div id="part2">
+		<div id="wrap">
+		<div id="logoInInstruction"><img src="img/logo.png" /></div>
+		<div class="bloque"><img src="img/title_page2.png" /></div>
+		<div id="groupInstruct">
+			<img src="img/inst_uno.png" />
+			<img src="img/inst_dos.png" />
+			<img src="img/inst_tres.png" />
+		</div>
+		<div class="bloque"><img src="img/jugar.png" id="empezar" onClick="javascript:empezar()" /></div>
+		
+		</div>
+	</div>
+	<!--INSTRUCTIONS-->
+	
+	<!--1PLAYER-->
+	<div id="part3">
+		<div><img src="img/back.png" /></div>
+		<div id="datos"><span>350 P</span></div>
+		<div id="datos"><span>03:45</span></div>
+		<div>
+			<img src="img/bom.png" />
+			<img src="img/camaron.png" />
+			<img src="img/carne.png" />
+			<img src="img/galleta.png" />
+			<img src="img/ocho.png" />
+			<img src="img/peperoni.png" />
+			<img src="img/pollo.png" />
+			<img src="img/queso.png" />
+			<img src="img/sello.png" />
+		</div>
+		<div id=""><img src="img/carrito.png" /></div>
+		<div id="avanza"><span> >> </span></div>
+	</div>
+	<!--1PLAYER-->
+
+	<!--2PLAYER-->
+	<div id="part4">
+		<canvas id="carrito" width="206" height="175"> </canvas>
+		<canvas id="sello" width="84" height="82"></canvas>
+		<canvas id="bomba" width="63" height="101"></canvas>
+		<canvas id="camaron" width="61" height="64"></canvas>
+		<img src="img/separador.png" />
+	</div>
+	<!--2PLAYER-->
+
+	<!--POINTS-->
+	<div id="part5">
+	</div>
+	<!--POINTS-->
+
+	<!--RELOAD-->
+	<div id="part6">
+	</div>
+	<!--RELOAD-->
 </body>
 </html> 

@@ -1,0 +1,78 @@
+<html>
+<head>
+    <title>Simple Animation</title>
+    <script type="text/javascript">
+    function init() {
+      /*  can = document.getElementById("can"); //creo canvas
+        ctx = can.getContext("2d"); //creo context
+        drawCanvas();
+        ctx.clearRect(0, 0, can.width, can.height);
+        ctx.translate(120, 80);*/
+     
+    }
+
+
+    /*
+    -------------------------------------------------------------------------------------
+    ANIMATION
+    -------------------------------------------------------------------------------------
+    */
+    var surface;
+    var happy;
+    var x = 50;
+    var y = 0;
+    var dirX = 1;
+    var dirY = 1;
+
+    function drawCanvas() {
+        // Get our Canvas element
+        surface = document.getElementById("myCanvas");
+        
+        if (surface.getContext) {
+            happy = new Image();
+            happy.onload = loadingComplete;
+            happy.src = "img/carne.png";
+        }
+    }
+
+    function loadingComplete(e) {
+        setInterval(loop, 10);
+    }
+
+    function loop() {
+        
+        var surfaceContext = surface.getContext('2d');
+
+        surfaceContext.fillStyle = "rgb(255,255,255)";
+        surfaceContext.fillRect(0, 0, surface.width, surface.height);
+        
+        surfaceContext.drawImage(happy, x, y);
+
+        x += dirX;
+        y += dirY;
+
+        if (x <= 0 || x > 120 - 23) {
+            dirX = -dirX;
+            if (dirX == '-1'){
+               Clear_image();
+            }
+        }
+        if (y <= 0 || y > 120 - 23) {
+            dirY = -dirY;
+        }
+    }
+
+    function Clear_image() {
+        surfaceContext.clearRect(1, 1, 120, 120);
+    } 
+
+    </script>
+</head>
+<body onload="drawCanvas();">
+    <div>
+        <canvas id="myCanvas" width="120" height="120">
+            <p>Your browser doesn't support canvas.</p>
+        </canvas>
+    </div>
+</body>
+</html>

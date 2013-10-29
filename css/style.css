@@ -9,8 +9,86 @@ body{
 }
 
 body{
-	width: 800px;
-	height: 1280px;
+	width: 1280px;
+	height: 800px;
 	background-image: url(../img/BackFondo.jpg);
 	background-repeat: no-repeat;
 }
+
+#part1, #part2, #part3,
+#part4, #part5, #part6{
+	width: 1280px;
+	height: 800px;
+}
+
+/*
+--------------------------------------------------------------------------------------
+HOME
+--------------------------------------------------------------------------------------
+*/
+#logoInHome{
+	width:570px;
+	margin-right: auto;
+	margin-left: auto;
+	margin-top: 230px;
+	/*background-color: red; /*ubicacion*/
+}
+#botones{
+	width: 385px;
+	margin-left: auto;
+	margin-right: auto;
+	/*background-color: purple; /*ubicacion*/
+}
+
+/*
+-------------------------------------------------------------------------------------
+INSTRUCTIONS
+-------------------------------------------------------------------------------------
+*/
+#wrap{
+	/*background-color: red; /*ubicacion*/
+	width: 1115px;
+	height: 700px;
+	margin-left: 124px;
+	margin-top: 57px;
+}
+#logoInInstruction img{
+	width: 300px;
+}
+#groupInstruct, .bloque{
+	margin-left: auto;
+	margin-right: auto;
+	text-align: center;
+}
+
+/*
+---------------------------------------------------------------------------------------
+JUEGO PARA 1 
+---------------------------------------------------------------------------------------
+*/
+#datos, #avanza{
+	width:154px;
+	height:74px;
+	color: #0080C7;
+	padding: 15px 36px;
+	background-image: url(../img/puntaje.png);
+	background-repeat: no-repeat;
+}
+#datos span, #avanza span{
+	font-size: 42px;
+	font-weight: 600;
+	font-family: Headline One HPLHS;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
