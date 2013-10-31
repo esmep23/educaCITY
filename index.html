@@ -1,48 +1,96 @@
-<!DOCTYPE HTML>
 <html>
-  <head>
-    <style>
-      body {
-        margin: 0px;
-        padding: 0px;
-      }
-    </style>
-  </head>
-  <body>
-    <div id="container"></div>
+<head>
+    <title>Animation kinetic</title>
+    <script type="text/javascript" src="js/jquery.js"></script>
+    <script type="text/javascript" src="js/jquery-1.9.1.js"></script>
     <script src="http://d3lp1msu2r81bx.cloudfront.net/kjs/js/lib/kinetic-v4.7.2.min.js"></script>
-    <script defer="defer">
-      var stage = new Kinetic.Stage({
+    
+   
+</head>
+<body>
+    <div id="container">  </div>
+     <script type="text/javascript">
+
+   var stage = new Kinetic.Stage({
         container: 'container',
-        width: 578,
-        height: 200
+        width: 900,
+        height: 800
       });
-      var layer = new Kinetic.Layer();
+   var layer = new Kinetic.Layer();
 
-      var hexagon = new Kinetic.RegularPolygon({
-        x: stage.getWidth() / 2,
-        y: stage.getHeight() / 2,
-        sides: 6,
-        radius: 70,
-        fill: 'red',
-        stroke: 'black',
-        strokeWidth: 4
+    var imgObj1 = new Image();
+    var imgObj2 = new Image();
+    var loadCount = 0;
+   /**
+   ---------------------------------
+   **/
+    imgObj1.onload = function() {
+       loadCount++;
+       if(loadCount==2) putOnCanvas();
+    };
+
+    imgObj2.onload = function() {
+       loadCount++;
+       if(loadCount==2) putOnCanvas();
+    };
+
+    imgObj1.src = "img/pollo.png";
+    imgObj2.src = "img/carrito.png";
+   /**
+   ---------------------------------
+   **/
+    function putOnCanvas() {
+        var yoda = new Kinetic.Image({
+          x: 0,
+          y: stage.getHeight() / 2 - 59,
+          image: imgObj1,
+          width: 61,
+          height: 67
+        });
+
+        var filteredYoda = new Kinetic.Image({
+          x: 400,
+          //y: stage.getHeight() / 2 - 59,
+          y:500,
+          image: imgObj2,
+          width: 106,
+          height: 118
+        });
+
+        // add the shape to the layer
+        layer.add(yoda); //imagen 1
+        layer.add(filteredYoda); //imagen2
+
+        // add the layer to the stage
+        stage.add(layer);
+
+    var tween = new Kinetic.Tween({
+        node: yoda, 
+        duration: 1,
+        x: 400,
+        y: 500,
+        //rotation: Math.PI * 2,
+        opacity: 1,
+        strokeWidth: 6,
+        //scaleX: 1.5
       });
+      
+      // start tween after 2 seconds
+      setTimeout(function() {
+        tween.play();
+      }, 2000);
 
-      layer.add(hexagon);
-      stage.add(layer);
+        // apply grayscale filter to second image
+        filteredYoda.applyFilter(Kinetic.Filters.Grayscale, null, function() {
+          layer.draw();
+        });
+    }
 
-      var amplitude = 150;
-      var period = 2000;
-      // in ms
-      var centerX = stage.getWidth() / 2;
+/**
+---------------------------------------
+ANIMACION
+**/
 
-      var anim = new Kinetic.Animation(function(frame) {
-        hexagon.setX(amplitude * Math.sin(frame.time * 2 * Math.PI / period) + centerX);
-      }, layer);
-
-      anim.start();
-
-    </script>
-  </body>
+</script>
+</body>
 </html>

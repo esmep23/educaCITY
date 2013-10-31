@@ -1,157 +1,96 @@
 <html>
 <head>
-    <title>Simple Animation</title>
+    <title>Animation kinetic</title>
     <script type="text/javascript" src="js/jquery.js"></script>
     <script type="text/javascript" src="js/jquery-1.9.1.js"></script>
+    <script src="http://d3lp1msu2r81bx.cloudfront.net/kjs/js/lib/kinetic-v4.7.2.min.js"></script>
+    
+   
+</head>
+<body>
+    <div id="container">  </div>
+     <script type="text/javascript">
 
-    <script type="text/javascript" src="js/jquery.transit.min.js"></script>
-   <script type="text/javascript">
+   var stage = new Kinetic.Stage({
+        container: 'container',
+        width: 900,
+        height: 800
+      });
+   var layer = new Kinetic.Layer();
 
-    $.fx.speeds._default = 3000; //duration transit
+    var imgObj1 = new Image();
+    var imgObj2 = new Image();
+    var loadCount = 0;
+   /**
+   ---------------------------------
+   **/
+    imgObj1.onload = function() {
+       loadCount++;
+       if(loadCount==2) putOnCanvas();
+    };
 
-    var cwidth = 800;
-    var cheight =900;
-    var context;
-    var canvas1;
- 
+    imgObj2.onload = function() {
+       loadCount++;
+       if(loadCount==2) putOnCanvas();
+    };
 
-    var img=["pollo.png", "carne.png", "queso.png", "sello.png"];
-/*
--------------------------------------------------------------------------------
-    transicion 
--------------------------------------------------------------------------------
-*/
-    window.requestAnimFrame = (function(callback) {
-        return window.requestAnimationFrame || window.webkitRequestAnimationFrame || window.mozRequestAnimationFrame || window.oRequestAnimationFrame || window.msRequestAnimationFrame ||
-        function(callback) {
-          window.setTimeout(callback, 1000 / 60);
-        };
-      })();
+    imgObj1.src = "img/pollo.png";
+    imgObj2.src = "img/carrito.png";
+   /**
+   ---------------------------------
+   **/
+    function putOnCanvas() {
+        var yoda = new Kinetic.Image({
+          x: 0,
+          y: stage.getHeight() / 2 - 59,
+          image: imgObj1,
+          width: 61,
+          height: 67
+        });
 
-    function init() {
-        //carritoCompras();
-        /*
-        ------------------------------
-        creacion de objetos
-        ------------------------------
-        */
-        canvas1 = document.getElementById('canvas');
-        context = document.getElementById('canvas').getContext('2d');
-        
-        ranImage(1);
-        //canvas1.addEventListener('click',ranImage,false);
-     
-        context.strokeRect(0,0,cwidth,cheight);
-        carrito = carritoCompras(); //crear carrito de compras
+        var filteredYoda = new Kinetic.Image({
+          x: 400,
+          //y: stage.getHeight() / 2 - 59,
+          y:500,
+          image: imgObj2,
+          width: 106,
+          height: 118
+        });
 
-        isCollide(ranImage(), carrito);
+        // add the shape to the layer
+        layer.add(yoda); //imagen 1
+        layer.add(filteredYoda); //imagen2
 
-        /*
-        -------------------------------
-        transicion 
-        -------------------------------
-        */
-        
-        // wait one second before starting animation
+        // add the layer to the stage
+        stage.add(layer);
 
+    var tween = new Kinetic.Tween({
+        node: yoda, 
+        duration: 1,
+        x: 400,
+        y: 500,
+        //rotation: Math.PI * 2,
+        opacity: 1,
+        strokeWidth: 6,
+        //scaleX: 1.5
+      });
+      
+      // start tween after 2 seconds
+      setTimeout(function() {
+        tween.play();
+      }, 2000);
 
-        /*
-        ----------------------------------------
-        limpio elementos cuando se van creando
-        ----------------------------------------
-        */
-        clear();
-
-       // setInterval(function(){ 
-       //   clear(); 
-       // },3000); //mismo tiempo de duration transit
+        // apply grayscale filter to second image
+        filteredYoda.applyFilter(Kinetic.Filters.Grayscale, null, function() {
+          layer.draw();
+        });
     }
 
+/**
+---------------------------------------
+ANIMACION
+**/
 
-function carritoCompras(){
-    var imagenCarrito = new Image();
- 
-    imagenCarrito.onload = function(){
-        context.drawImage(imagenCarrito, 0, 0, 206, 175);
-    };
-    imagenCarrito.src = "img/carrito.png";
-    return (imagenCarrito);
-
-}
-
-
-function ranImage(ev) {
-    
-    var ranImg = parseInt(Math.random() * 4);
-    var newImage = new Image();
-    
-    //newImage.src = 'img/'+img[ranImg];
-    newImage.src = 'img/pollo.png';
-    var mx = 0;
-    var my = 0;
-
-    context.clearRect(0,0,cwidth,cheight);
-    context.strokeRect(0,0,cwidth,cheight);
-        
-    context.drawImage(newImage,mx,my, 80,80);
-    return (newImage);
-}
-
-
-
-
-/*
-------------------------------------------------------------------------------------------------
-ANIMACION BASICA
--------------------------------------------------------------------------------
-*/
-
-function getRandomArbitary (min, max) {
-    var num =  Math.floor(Math.random() * (max - min) + min);
-    alert(num);
-    return num; 
-}
-
-
-
-function clear(){
-    /* ELIMINO A ELEMENTO POLLO 
-        var elem = $("#canvas");
-        var canvas = elem.get(0);
-        var context = canvas.getContext("2d");
-
-        context.clearRect(0, 0, canvas.width, canvas.height);
-        context.beginPath();*/
-    /* ------------------------ */
-    //canvas1.width = canvas1.width;
-   //   isCollide(canvs, carritos);
-    //alert(a);
-}
-
-
-
-
-function isCollide(a, b) {
-    es = !(
-        ((b.y + b.height) < (a.y)) ||
-        (b.y > (a.y + a.height)) ||
-        ((b.x + b.width) < a.x) ||
-        (b.x > (a.x + a.width))
-    );
-    alert(es);
-   return !(
-        ((a.y + a.height) < (b.y)) ||
-        (a.y > (b.y + b.height)) ||
-        ((a.x + a.width) < b.x) ||
-        (a.x > (b.x + b.width))
-    );
-}
 </script>
-</head>
-<body onload="javascript:init()">
-    <div>
-        <canvas id="canvas" width="800" height="900"></canvas>
-    </div>
-     
 </body>
 </html>
