@@ -5,51 +5,54 @@
     <script type="text/javascript" src="js/jquery-1.9.1.js"></script>
 
     <script type="text/javascript" src="js/jquery.transit.min.js"></script>
-   
-</head>
-<body onload="javascript:init()">
-    <div>
-        <canvas id="canvas" width="80" height="80"><img src="img/carne.png" /></canvas>
-        <canvas id="carrito" width="206" height="175"><img src="img/carrito.png" /></canvas>
-    </div>
-     <script type="text/javascript">
+   <script type="text/javascript">
 
     $.fx.speeds._default = 3000; //duration transit
 
-    var cwidth = 80;
-    var cheight = 80;
-    var ctx;
+    var cwidth = 800;
+    var cheight =900;
+    var context;
     var canvas1;
-    var img=["pollo.png", "carne.png", "queso.png", "sello.png"];
+ 
 
-    function ssl(){
-        $('#canvas').transition({ y: getRandomArbitary(0, 500) });
-        var canvs = $("#canvas");
-        var carritos = $("#carrito");
-         isCollide(canvs, carritos);
-    }
+    var img=["pollo.png", "carne.png", "queso.png", "sello.png"];
+/*
+-------------------------------------------------------------------------------
+    transicion 
+-------------------------------------------------------------------------------
+*/
+    window.requestAnimFrame = (function(callback) {
+        return window.requestAnimationFrame || window.webkitRequestAnimationFrame || window.mozRequestAnimationFrame || window.oRequestAnimationFrame || window.msRequestAnimationFrame ||
+        function(callback) {
+          window.setTimeout(callback, 1000 / 60);
+        };
+      })();
+
     function init() {
-        carritoCompras();
+        //carritoCompras();
         /*
         ------------------------------
         creacion de objetos
         ------------------------------
         */
-        ctx = document.getElementById('canvas').getContext('2d');
         canvas1 = document.getElementById('canvas');
+        context = document.getElementById('canvas').getContext('2d');
         
         ranImage(1);
         //canvas1.addEventListener('click',ranImage,false);
      
-        //ctx.strokeRect(0,0,cwidth,cheight);
+        context.strokeRect(0,0,cwidth,cheight);
+        carrito = carritoCompras(); //crear carrito de compras
+
+        isCollide(ranImage(), carrito);
 
         /*
         -------------------------------
         transicion 
         -------------------------------
         */
-        $('#canvas').transition({ x: getRandomArbitary(0, 500) });
-        //$('#pollo').transition({ x: getRandomArbitary(0, 500), y:'500px' });
+        
+        // wait one second before starting animation
 
 
         /*
@@ -58,19 +61,22 @@
         ----------------------------------------
         */
         clear();
+
        // setInterval(function(){ 
-       //     clear(); 
-       //     },3000); //mismo tiempo de duration transit
+       //   clear(); 
+       // },3000); //mismo tiempo de duration transit
     }
+
+
 function carritoCompras(){
-    var canvas = document.getElementById('carrito');
-    var context = canvas.getContext('2d');
     var imagenCarrito = new Image();
-    
+ 
     imagenCarrito.onload = function(){
         context.drawImage(imagenCarrito, 0, 0, 206, 175);
     };
     imagenCarrito.src = "img/carrito.png";
+    return (imagenCarrito);
+
 }
 
 
@@ -79,17 +85,20 @@ function ranImage(ev) {
     var ranImg = parseInt(Math.random() * 4);
     var newImage = new Image();
     
-    newImage.src = 'img/'+img[ranImg];
-
+    //newImage.src = 'img/'+img[ranImg];
+    newImage.src = 'img/pollo.png';
     var mx = 0;
     var my = 0;
 
-    ctx.clearRect(0,0,cwidth,cheight);
-    ctx.strokeRect(0,0,cwidth,cheight);
+    context.clearRect(0,0,cwidth,cheight);
+    context.strokeRect(0,0,cwidth,cheight);
         
-    ctx.drawImage(newImage,mx,my, 80,80);
+    context.drawImage(newImage,mx,my, 80,80);
+    return (newImage);
 }
-    
+
+
+
 
 /*
 ------------------------------------------------------------------------------------------------
@@ -103,6 +112,8 @@ function getRandomArbitary (min, max) {
     return num; 
 }
 
+
+
 function clear(){
     /* ELIMINO A ELEMENTO POLLO 
         var elem = $("#canvas");
@@ -113,20 +124,21 @@ function clear(){
         context.beginPath();*/
     /* ------------------------ */
     //canvas1.width = canvas1.width;
-    var canvs = document.getElementById("canvas");
-    var carritos = document.getElementById("carrito");
-      isCollide(canvs, carritos);
+   //   isCollide(canvs, carritos);
     //alert(a);
 }
 
 
+
+
 function isCollide(a, b) {
-    alert(a.width);
-    alert(b.width);
-    alert(a.x);
-    alert(b.x);
-    alert(a.y);
-    alert(b.y);
+    es = !(
+        ((b.y + b.height) < (a.y)) ||
+        (b.y > (a.y + a.height)) ||
+        ((b.x + b.width) < a.x) ||
+        (b.x > (a.x + a.width))
+    );
+    alert(es);
    return !(
         ((a.y + a.height) < (b.y)) ||
         (a.y > (b.y + b.height)) ||
@@ -135,5 +147,11 @@ function isCollide(a, b) {
     );
 }
 </script>
+</head>
+<body onload="javascript:init()">
+    <div>
+        <canvas id="canvas" width="800" height="900"></canvas>
+    </div>
+     
 </body>
 </html>

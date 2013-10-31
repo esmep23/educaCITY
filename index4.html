@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+        }
+    </style>
+    <script>
+        //document.onload
+        window.onload= function () {
+            'use strict'
+            
+            //Objetos
+            var Ball=function(x, y,velx,vely,r,color){
+                //Posicion del centro de la bola
+                this.pos= {
+                    x:x,
+                    y:y
+                }
+                //Radio de la bola
+                this.rad=r;
+                //Vector velocidad de la bola
+                this.vel = {
+                    x:velx,
+                    y:vely
+                }
+                //Color de la bola
+                this.color=color;
+                //Perdida de energia por rebote,
+                //NO pierde energia:0
+                //Pierde un 20%:0.2
+                //perdida total de energia:1
+                this.damping=0.2;
+                //Resistencia al aire
+                this.airResist=0;
+                //Coeficiente de rozamiento solo se aplica cuando está en el suelo
+                this.friction=0.05;
+                
+            }
+            
+            //Objeto Juego
+            var Game=function(canvas,fps){
+              //Variables del entorno de juego
+                this.canvas = canvas;
+                this.ctx = this.canvas.getContext("2d");
+                this.fps = fps;//Fps a actualizar
+                this.ticks = 1000 / fps; //Millisegundos por tick a actualizar
+                this.W=this.ctx.canvas.width;//Ancho del canvas
+                this.H=this.ctx.canvas.height;//Alto del canvas
+                this.balls = new Array();//Bolas en el campo
+                this.gravity=1;//Valor de la gravedad
+                //Funci�n para a�adir una bola al juego.
+                this.addBall = function(newBall){
+                    this.balls.push(newBall);
+                }
+                this.clear = function(){
+                    this.ctx.clearRect(0,0,this.W,this.H);
+                }
+                //Funcion para dibujar el canvas 
+                this.runTick=function(){
+                    
+                    for(var i=0;i<this.balls.length;i++)
+                    {
+                        var b=this.balls[i];
+                        //Actualizamos las velocidades
+                        b.vel.y +=this.gravity*(1-b.airResist);
+                        //Actualizamos la posicion
+                        b.pos.y +=b.vel.y;
+                        b.pos.x +=b.vel.x;
+                        //Colision con suelo
+                        if(b.pos.y>this.H- b.rad){
+                            b.pos.y=this.H- b.rad;
+                            b.vel.y*=-(1-b.damping);
+                            b.vel.x*=(1-b.friction);
+                        }
+                        //Colisión con paredes
+                        if(b.pos.x>this.W- b.rad||b.pos.x-b.rad<0){
+                            b.pos.x=b.pos.x-b.rad<0?b.rad:this.W- b.rad;
+                            b.vel.x*=-(1-b.damping);
+                        }
+                    }
+                    this.draw();
+                }
+                this.draw = function(){
+                    //Limpiamos el canvas.
+                    this.clear();
+                    //Recorremos todas las bolas y las dibujamos
+                    for(var i=0;i<this.balls.length;i++)
+                    {
+                        var b=this.balls[i];
+                        this.ctx.beginPath();
+                        //Dibuja una bola
+                        this.ctx.arc(b.pos.x, b.pos.y, b.rad, 0, Math.PI*2, true);
+                        //Color de la bola
+                        this.ctx.fillStyle= b.color;
+                        this.ctx.fill();
+                        //Reborde de la bola
+                        this.ctx.lineWidth = 2;
+                        this.ctx.strokeStyle = 'black';
+                        this.ctx.stroke();
+                        this.ctx.closePath();
+                    }
+                }
+            }
+
+
+            //Parametros iniciales basicos para crear el contexto 2D
+            var canvas = document.getElementById("canvas");
+            var game = new Game(canvas, 60);
+            //A�adimos componentes al juego.
+
+            game.addBall(new Ball(game.W/2,game.H-80,25,"green"));
+
+            game.canvas.addEventListener('click', clickHandler,false);
+            function clickHandler(){
+                //game.balls=[];
+                var x = event.clientX- canvas.getBoundingClientRect().left;
+                var y = event.clientY- canvas.getBoundingClientRect().top;
+                for(var i=0;i<1;i++){
+                    game.addBall(new Ball(x,y,Math.random()*20-10,Math.random()*20-10,Math.random()*10+5,rndColor()));
+                }
+            }
+            function rndColor() {
+                var hex = ['0', '1', '2', '3', '4', '5', '6', '7',
+                            '8', '9', 'A', 'B', 'C', 'D', 'E', 'F'],
+                        color = '#', i;
+                for (i = 0; i < 6 ; i++) {
+                    color = color + hex[Math.floor(Math.random() * 16)];
+                }
+                return color;
+            }
+            //Dibujamos el canvas
+
+            setInterval(function () {
+                game.runTick();
+            }, game.ticks);
+        };
+
+
+    </script>
+
+</head>
+
+<body>
+Este Codigo ha sido creado por <a href="http://www.jumptofive.com" rel="author">JumpToFive</a></br>
+<canvas id="canvas" width="800" height="800" style="border:1px solid"></canvas>
+</br><a rel="license" href="http://creativecommons.org/licenses/by/3.0/deed.es_CO"><img alt="Licencia Creative Commons" style="border-width:0" src="http://i.creativecommons.org/l/by/3.0/88x31.png" /></a><br />Este obra de <a xmlns:cc="http://creativecommons.org/ns#" href="http://www.jumptofive.com" property="cc:attributionName" rel="cc:attributionURL">JumpToFive</a> est&aacute; bajo una <a rel="license" href="http://creativecommons.org/licenses/by/3.0/deed.es_CO">Licencia Creative Commons Atribuci&oacute;n 3.0 Unported</a>.
+</body>
+</html>
