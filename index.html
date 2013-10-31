@@ -1,77 +1,48 @@
+<!DOCTYPE HTML>
 <html>
-<head>
-    <title>Pop-up Canvas</title>
-    <meta name="viewport" content="width=device-width" />
+  <head>
     <style>
-        canvas {
-            background-image:url('cork.png');
-            border: 10px inset brown;
-            position:absolute;
-            top: -225;
-            left: 200;
-            -webkit-transition: all 1s;
-        }
- 
-        .can-hide {
-            top: -225;
-            opacity: 0;
-        }
- 
-        .can-pop {
-            top: 120;
-            opacity:1;
-        }
+      body {
+        margin: 0px;
+        padding: 0px;
+      }
     </style>
-    <script type="text/javascript">
-        var can, ctx,
-            x = 25, y = 25;
-            xdir = 1, ydir = 1;
- 
-        function init() {
-            can = document.getElementById("can");
-            ctx = can.getContext("2d");
-            var grad = ctx.createLinearGradient(0, 10, 0, 190);
-            grad.addColorStop(0, 'brown');
-            grad.addColorStop(1, 'red');
-            ctx.fillStyle = grad;
-            animate();
-        }
- 
-        function animate() {
-            x += xdir;
-            if (x > 375)
-                xdir = -1;
-            if (x < 25)
-                xdir = 1;
- 
-            y += ydir;
-            if (y > 175)
-                ydir = -1;
-            if (y < 25)
-                ydir = 1;
- 
-            ctx.clearRect(0, 0, 400, 200);
-            ctx.beginPath();
-            ctx.arc(x, y, 25, 0, 2 * Math.PI);
-            ctx.closePath();
-            ctx.fill();
-            setTimeout(animate, 25);
-        }
- 
-        function pop() {
-            can.className = "can-pop";
-        }
- 
-        function unpop() {
-            can.className = "can-hide";
-        }
+  </head>
+  <body>
+    <div id="container"></div>
+    <script src="http://d3lp1msu2r81bx.cloudfront.net/kjs/js/lib/kinetic-v4.7.2.min.js"></script>
+    <script defer="defer">
+      var stage = new Kinetic.Stage({
+        container: 'container',
+        width: 578,
+        height: 200
+      });
+      var layer = new Kinetic.Layer();
+
+      var hexagon = new Kinetic.RegularPolygon({
+        x: stage.getWidth() / 2,
+        y: stage.getHeight() / 2,
+        sides: 6,
+        radius: 70,
+        fill: 'red',
+        stroke: 'black',
+        strokeWidth: 4
+      });
+
+      layer.add(hexagon);
+      stage.add(layer);
+
+      var amplitude = 150;
+      var period = 2000;
+      // in ms
+      var centerX = stage.getWidth() / 2;
+
+      var anim = new Kinetic.Animation(function(frame) {
+        hexagon.setX(amplitude * Math.sin(frame.time * 2 * Math.PI / period) + centerX);
+      }, layer);
+
+      anim.start();
+
     </script>
-</head>
-<body onload="init()" onmouseup="unpop()">
-    <canvas class="can-hide" id="can" height="200" width="400">
-    </canvas>
-    <h1>Click to view:<h1>
-    <h1 onmousedown="pop()" ontouchstart="pop()" onclick="void()">
-        &nbsp;[x] Bulletin Board</h1>
-</body>
+  </body>
 </html>
